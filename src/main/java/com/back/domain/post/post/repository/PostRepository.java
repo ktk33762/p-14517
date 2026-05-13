@@ -16,4 +16,15 @@ public interface PostRepository {
             </script>
             """)
     List<Post> findAll();
+
+
+    @Select("""
+            <script>
+            select
+            * from post
+            where id = #{id}
+            </script>
+            """)
+
+    Post findById(int id);
 }

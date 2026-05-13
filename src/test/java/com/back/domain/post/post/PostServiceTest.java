@@ -25,4 +25,13 @@ public class PostServiceTest {
 
         assertThat(posts).hasSize(2);
     }
+
+    @Test
+    @DisplayName("게시물 단건 조회")
+    void t2 () {
+        Post post = postService.findById(1);
+
+        assertThat(post.getTitle()).isEqualTo("제목 1");
+        assertThat(post.getContent()).isEqualTo("내용 1");
+    }
 }
