@@ -77,4 +77,14 @@ public interface PostRepository {
             @Param("title") String title,
             @Param("content") String content
     );
+    
+    @Select("""
+        select * 
+        from post
+        WHERE title LIKE CONCAT('%', #{kw}, '%')
+    """)
+    List<Post> search(
+            @Param("kwType") String kwType,
+            @Param("kw") String kw
+    );
 }
