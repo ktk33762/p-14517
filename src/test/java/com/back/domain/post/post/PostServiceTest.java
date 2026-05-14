@@ -34,4 +34,16 @@ public class PostServiceTest {
         assertThat(post.getTitle()).isEqualTo("제목 1");
         assertThat(post.getContent()).isEqualTo("내용 1");
     }
+    @Test
+    @DisplayName("게시물 생성")
+    void t3 () {
+        // when: 게시글 작성
+        int id = postService.create("제목 3", "내용 3");
+
+        // then: 해당 id의 게시글 불러오기
+        Post post = postService.findById(id);
+
+        assertThat(post.getTitle()).isEqualTo("제목 3");
+        assertThat(post.getContent()).isEqualTo("내용 3");
+    }
 }
