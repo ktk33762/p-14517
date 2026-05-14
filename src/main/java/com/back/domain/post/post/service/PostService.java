@@ -51,6 +51,6 @@ public class PostService {
     }
 
     public List<Post> search(String twType, String kw) {
-        return postRepository.search(twType, kw)
+        return postRepository.search(twType, kw);
     }
 }
