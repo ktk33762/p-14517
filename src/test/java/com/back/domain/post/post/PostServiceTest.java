@@ -59,4 +59,15 @@ public class PostServiceTest {
         assertThat(post.getTitle()).isEqualTo("제목 3");
         assertThat(post.getContent()).isEqualTo("내용 3");
     }
+
+    @Test
+    @DisplayName("게시물 삭제")
+    void t5 () {
+        // when: 게시글 작성
+        postService.deleteById(1);
+
+        List<Post> posts = postService.findAll();
+
+        assertThat(posts).hasSize(1);
+    }
 }
