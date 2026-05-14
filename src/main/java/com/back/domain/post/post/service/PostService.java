@@ -41,4 +41,12 @@ public class PostService {
     public void deleteById(int id) {
         postRepository.deleteById(id);
     }
+
+    public void update(int id, String title, String content) {
+        int updatedRows = postRepository.update(id, title, content);
+
+        if (updatedRows != 1) {
+            throw new IllegalStateException("게시물 수정 실패");
+        }
+    }
 }

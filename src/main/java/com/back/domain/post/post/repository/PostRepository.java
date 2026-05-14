@@ -64,4 +64,17 @@ public interface PostRepository {
             </script>
             """)
     void deleteById(int id);
+
+    @Update("""
+        UPDATE post
+        set modifyDate = NOW(),
+            title = #{title},
+            content = #{content}
+        where id = #{id}
+    """)
+    int update(
+            @Param("id") int id,
+            @Param("title") String title,
+            @Param("content") String content
+    );
 }
