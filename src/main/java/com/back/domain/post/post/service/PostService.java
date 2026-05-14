@@ -57,4 +57,12 @@ public class PostService {
     public List<Post> findAllOrdered(String orderBy, String orderByDirection) {
         return postRepository.findAllOrdered(orderBy, orderByDirection);
     }
+
+    public int deleteByIds(List<Integer> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return 0;
+        }
+
+        return postRepository.deleteByIds(ids);
+    }
 }
