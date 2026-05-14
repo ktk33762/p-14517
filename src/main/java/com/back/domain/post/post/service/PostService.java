@@ -53,4 +53,8 @@ public class PostService {
     public List<Post> search(String twType, String kw) {
         return postRepository.search(twType, kw);
     }
+
+    public List<Post> findAllOrdered(String orderBy, String orderByDirection) {
+        return postRepository.findAllOrdered(orderBy, orderByDirection);
+    }
 }

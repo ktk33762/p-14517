@@ -13,6 +13,7 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
+@Transactional
 @ActiveProfiles("test")
 @SpringBootTest
 public class PostServiceTest {
@@ -27,7 +28,6 @@ public class PostServiceTest {
         assertThat(posts).hasSize(2);
     }
 
-    @Transactional
     @Test
     @DisplayName("게시물 단건 조회")
     void t2 () {
@@ -37,7 +37,6 @@ public class PostServiceTest {
         assertThat(post.getContent()).isEqualTo("내용 1");
     }
 
-    @Transactional
     @Test
     @DisplayName("게시물 생성")
     void t3 () {
@@ -51,7 +50,6 @@ public class PostServiceTest {
         assertThat(post.getContent()).isEqualTo("내용 3");
     }
 
-    @Transactional
     @Test
     @DisplayName("게시물 생성")
     void t4 () {
@@ -65,7 +63,6 @@ public class PostServiceTest {
         assertThat(post.getContent()).isEqualTo("내용 3");
     }
 
-    @Transactional
     @Test
     @DisplayName("게시물 삭제")
     void t5 () {
@@ -77,7 +74,6 @@ public class PostServiceTest {
         assertThat(posts).hasSize(1);
     }
 
-    @Transactional
     @Test
     @DisplayName("게시물 수정")
     void t6 () {
@@ -141,5 +137,52 @@ public class PostServiceTest {
 
         posts = postService.search("", "내용 2");
         assertThat(posts).hasSize(1);
+    }
+
+    @Test
+    @DisplayName("정렬된 게시물 조회 - 제목 오름차순")
+    void t10() {
+        List<Post> posts = postService.findAllOrdered("title", "asc");
+        assertThat(posts).hasSize(2);
+        assertThat(posts.get(0).getTitle()).isEqualTo("제목 1");
+        assertThat(posts.get(1).getTitle()).isEqualTo("제목 2");
+    }
+
+    @Test
+    @DisplayName("정렬된 게시물 조회 - 제목 내림차순")
+    void t11() {
+        List<Post> posts = postService.findAllOrdered("title", "desc");
+        assertThat(posts).hasSize(2);
+        assertThat(posts.get(0).getTitle()).isEqualTo("제목 2");
+        assertThat(posts.get(1).getTitle()).isEqualTo("제목 1");
+    }
+
+    @Test
+    @DisplayName("정렬된 게시물 조회 - 생성일 내림차순")
+    void t12() {
+        postService.create("제목 0", "내용 0");
+        List<Post> posts = postService.findAllOrdered("createDate", "desc");
+        assertThat(posts).hasSize(3);
+
+        assertThat(posts.get(0).getTitle()).isEqualTo("제목 0");
+        assertThat(posts.get(2).getTitle()).isEqualTo("제목 2");
+        assertThat(posts.get(1).getTitle()).isEqualTo("제목 1");
+    }
+
+    @Test
+    @DisplayName("게시물 수정 - 일부 데이터만 수정하기")
+    void t13 () {
+        // given: 기존 게시물 1번 불러오기
+        Post post = postService.findById(1);
+        assertThat(post).isNotNull();
+
+        // when: 제목/내용 수정
+        postService.update(1, "", "내용 1 수정");
+
+        // then: 수정 결과 확인
+        Post updatedPost = postService.findById(1);
+
+        assertThat(updatedPost.getTitle()).isEqualTo("제목 1");
+        assertThat(updatedPost.getContent()).isEqualTo("내용 1 수정");
     }
 }
